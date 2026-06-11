@@ -1,0 +1,98 @@
+[
+  {
+    "title": "AI辅助开发-休历",
+    "category": "开发",
+    "link": "https://jackcooper.qzz.io/develop-restcal-on-my-own",
+    "date": "2026-06-11",
+    "description": "写在前面 这是第一次自己想要根据自己正儿八经的需求，来开发一款工具来解决平时经常遇到的类似请假相关问题。 因为是在小公司，所谓的请假流程没用那么完善，通常都只是发个微信跟上级请示一下今天因为啥原因来不了了。 然后这天的薪水也就没了。但是之前刚来的时候还是会写请假条的，因为请假比较频繁，所以后面就不怎",
+    "image": "https://jackcooper.qzz.io/.netlify/images?url=_astro%2Fxiuli-v0.C0bTqIxg.png&fm=webp&w=800&h=825"
+  },
+  {
+    "title": "TUN模式下导致断网解决方案",
+    "category": "配置",
+    "link": "https://jackcooper.qzz.io/tun-mode-cause-network-error",
+    "date": "2026-06-09",
+    "description": "影子 起因是自己在和好友一起玩《无畏契约》的时候，每次都会卡在加载页面，常见的报错是 Val 29，Val 51，Val 54 等。 上万能的B站查询了错误代码之后，发现此类的报错一般都和电脑自身的网络问题有关。 尝试 知道了是网络问题之后，我的第一反应是用火绒的断网修复功能来尝试解决，因为之前很多",
+    "image": ""
+  },
+  {
+    "title": "Windows上的虚拟摄像头方案",
+    "category": "配置",
+    "link": "https://jackcooper.qzz.io/virtual-cam-windows",
+    "date": "2026-05-29",
+    "description": "影子 昨天看见自己刷机的老手机，心血来潮想试试能不能把他做成虚拟摄像头。 之前其实也做过，用的是 Link Your Phone ，这个方案有点太麻烦了。 想着旧手机没有sim卡，让chat给我出了个虚拟摄像头的方案，果断选择了 DroidCam 。 安装 首先下载并安装DroidCam在双端 ::",
+    "image": ""
+  },
+  {
+    "title": "我最近使用 AI 的渠道",
+    "category": "AI",
+    "link": "https://jackcooper.qzz.io/recent-ai-channels",
+    "date": "2026-04-28",
+    "description": "影子 今天早上闲来无事，试了下之前注册 ChatGPT Plus 的渠道，发现又可以使用了，五一可以爽用了，然后乘着这个好兴致，作一篇博客来分享下自己最近 白嫖 使用AI、Agent的渠道，恐怕以后这些渠道会被封杀，作此博客留念！ 雨后春笋 最近 AI 工具真的越来越多了，真的是如雨后春笋一般，多到",
+    "image": "https://jackcooper.qzz.io/.netlify/images?url=_astro%2Fmimo-team-send-email.35szgRyH.png&fm=webp&w=800&h=298"
+  },
+  {
+    "title": "ChatGPT Plus/Pro 过卡记",
+    "category": "AI",
+    "link": "https://jackcooper.qzz.io/how-to-pass-card-activation-of-chatgpt-plus",
+    "date": "2026-02-03",
+    "description": "影子 前天偶然发现，ChatGPT 的头像上多了一个“Free Plus Trial”的标签。估计是 OpenAI 看我用了这么久还没开会员，于是扔了个“免费试用”来引诱我（笑）。 我心想：那就试试看呗。结果没想到卡验证这关直接卡死——我手头没有外卡，用网上那些“随机生成”的卡号、有效期、CVV，甚",
+    "image": "https://jackcooper.qzz.io/.netlify/images?url=_astro%2Fchatgpt-plus-successful-sub-email.sJ2fqOmx.png&fm=webp&w=800&h=387"
+  },
+  {
+    "title": "算法聚类效应",
+    "category": "AI",
+    "link": "https://jackcooper.qzz.io/algorithm-clustering-effect",
+    "date": "2026-01-16",
+    "description": "在这个数字化时代，我们每天都在与各种推荐算法打交道。从短视频平台到新闻资讯，算法似乎比我们更了解自己。这就引出了一个有趣且值得深思的话题—— 算法聚类效应 。 什么是算法聚类效应？ 简单来说，算法聚类效应（或者常说的“信息茧房”、“回声室效应”）是指推荐系统根据用户的历史行为、喜好和偏好，不断推送相",
+    "image": ""
+  },
+  {
+    "title": "梦境记录：梦境/现实",
+    "category": "夢",
+    "link": "https://jackcooper.qzz.io/dream",
+    "date": "2026-01-05",
+    "description": "这里用来记录一些自己奇奇怪怪的梦境吧, 最近可能有点焦虑了, 受到多方面的影响, 老做梦. 有两个打字的压在我身上 首先是在上周, 大概是2025年12月25还是26号, 我的室友在凌晨听见我发出怪异的响声(听起来像是被什么东西追着了, 看起来像是做噩梦了), 然后他问我怎么了? 然后我就做起来梦呓",
+    "image": ""
+  },
+  {
+    "title": "学习 RAG：持续更新",
+    "category": "AI",
+    "link": "https://jackcooper.qzz.io/learning-rag",
+    "date": "2025-12-11",
+    "description": "引子 在L站上看见一位大佬发的帖子说RAG里面有蛮多讲究的, 然后还提到一点是AI强而不是RAG强, 其实我觉得这就是涉及到一个本地和云端的差距吧, 你像那种大企业, 例如国企那种, 可能不会轻易的把自己什么私密数据上传到云端的. 他们想要用RAG估计只能本地部署, 那位大佬说的是AI强, 可以自己",
+    "image": ""
+  },
+  {
+    "title": "耳石症自愈记",
+    "category": "生活",
+    "link": "https://jackcooper.qzz.io/my-headache-thought",
+    "date": "2025-11-26",
+    "description": "影子 大概是上周一吧, 染上了感冒, 请了两天的假, 后面发烧, 38度, 头晕晕的, 撑不住, 喝了感冒药, 周三恢复了一些, 就返工了. 耳石症 然后周末由于玩到比较晚(凌晨2,3点的样子), 早上睡眠又不是很好, 导致睡眠不是很充足, 周末症状就有点明显了, 记得第一次出现这种症状就是周六在玩",
+    "image": ""
+  },
+  {
+    "title": "Gemini 3 与 Antigravity IDE",
+    "category": "AI",
+    "link": "https://jackcooper.qzz.io/new-ai-thought",
+    "date": "2025-11-25",
+    "description": "影子 好像每次发布新模型，新IDE总会有几种不同的声音，左派和右派以及中间派，左派认为新模型的发布势必会给程序员的行业带来翻天覆地的改变，什么‘前端已死’，‘AI制作的效果强于自己’之类的，右派则偏向于保守一点的看法，他们则认为：AI现在做出来的东西还是有一定局限性，但是一代比一代好了，中间派则只是",
+    "image": "https://jackcooper.qzz.io/.netlify/images?url=_astro%2Fnano-banana-pro-1.D3egLY6o.png&fm=webp&w=800&h=800"
+  },
+  {
+    "title": "吾所行之事：不可逆也",
+    "category": "生活",
+    "link": "https://jackcooper.qzz.io/things-you-can-do-but-you-may-dont-know",
+    "date": "2025-10-10",
+    "description": "影子 在看 Quarter Mile的 Things You Don’t Have to Do 文章中发现的一篇好文： Things You're Allowed To Do ，里面有一些好的建议值得我反思，故作此博客来记录一下！ ::link{url=\"https://milan.cvitkovi",
+    "image": ""
+  },
+  {
+    "title": "Preload vs Prefetch vs Prerender",
+    "category": "SEO",
+    "link": "https://jackcooper.qzz.io/preload-vs-prefetch",
+    "date": "2025-09-16",
+    "description": "影子 在检查网站一些页面发现的问题：某个资源（字体、图片等）设置了预加载但是很长时间没有使用上，具体报错见下： The resource X was preloaded using link preload but not used within a few seconds from the win",
+    "image": "https://jackcooper.qzz.io/.netlify/images?url=_astro%2Fsvg-compare-preload-prefetch-prerender.Cb_-P8IN.png&fm=webp&w=800&h=503"
+  }
+]

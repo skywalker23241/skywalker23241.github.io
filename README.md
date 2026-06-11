@@ -1,2 +1,8 @@
 # skywalker23241.github.io
-This is 4 Github Pages.
+
+Minimal developer homepage for GitHub Pages.
+
+## Files
+
+- `index.html` - page content and structure
+- `styles.css` - responsive styling

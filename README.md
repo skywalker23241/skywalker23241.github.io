@@ -1,12 +1,12 @@
 # Abo Le — Personal Developer Homepage
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-live-222?logo=github)](https://www.abo.qzz.io/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-live-222?logo=github)](https://resume.abohack.com/)
 [![Static Site](https://img.shields.io/badge/Static%20Site-HTML%20%2B%20CSS%20%2B%20JS-orange)](#tech-stack)
 [![Responsive](https://img.shields.io/badge/Responsive-mobile%20friendly-blue)](#features)
 
 This repository powers my personal GitHub Pages homepage. It is built as a lightweight portfolio site for introducing who I am, what I do, the projects I am building, and selected posts from my blog.
 
-**Live site:** [www.abo.qzz.io](https://www.abo.qzz.io/)  
+**Live site:** [resume.abohack.com](https://resume.abohack.com/)  
 **GitHub Pages fallback:** [skywalker23241.github.io](https://skywalker23241.github.io/)
 
 ---
@@ -58,7 +58,7 @@ It is designed to be:
 | Fonts | Google Fonts / Poppins |
 | Contact Form | Formspree |
 | Hosting | GitHub Pages |
-| Custom Domain | `www.abo.qzz.io` |
+| Custom Domain | `resume.abohack.com` |
 
 ---
 
@@ -67,7 +67,6 @@ It is designed to be:
 ```text
 .
 ├── index.html              # Main page content and structure
-├── CNAME                   # Custom domain for GitHub Pages
 ├── README.md               # Project documentation
 └── assets/
     ├── css/
@@ -101,10 +100,17 @@ http://localhost:8000
 
 This site is deployed with **GitHub Pages** from the repository's static files.
 
-The custom domain is configured through the `CNAME` file:
+Production domain:
 
 ```text
-www.abo.qzz.io
+resume.abohack.com
+```
+
+If GitHub Pages is set to deploy from a branch, use:
+
+```text
+Branch: main
+Folder: / root
 ```
 
 After changes are pushed to the main branch, GitHub Pages will publish the latest version automatically.
@@ -120,7 +126,7 @@ Common updates can be made in these files:
 | Update page content | `index.html` |
 | Update styles or layout | `assets/css/style.css` |
 | Update page interactions | `assets/js/script.js` |
-| Update custom domain | `CNAME` |
+| Update custom domain | GitHub Pages settings or root `CNAME` file |
 | Update project documentation | `README.md` |
 
 ---

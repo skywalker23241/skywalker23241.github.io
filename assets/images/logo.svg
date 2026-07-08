@@ -5,7 +5,17 @@
       <stop offset="1" stop-color="#ffb347"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="16" fill="#1e1e21"/>
-  <rect x="5" y="5" width="54" height="54" rx="13" fill="url(#g)"/>
-  <text x="32" y="33" dy="0.36em" font-family="'Segoe UI', Arial, sans-serif" font-size="25" font-weight="800" fill="#1e1e21" text-anchor="middle">AL</text>
+  <style>
+    .ring { fill: #1e1e21; }
+    .tile { fill: url(#g); }
+    .mono { fill: #1e1e21; }
+    /* light tab bar: minimal black and white icon */
+    @media (prefers-color-scheme: light) {
+      .tile { fill: #1e1e21; }
+      .mono { fill: #ffffff; }
+    }
+  </style>
+  <rect class="ring" width="64" height="64" rx="16"/>
+  <rect class="tile" x="5" y="5" width="54" height="54" rx="13"/>
+  <text class="mono" x="32" y="33" dy="0.36em" font-family="'Segoe UI', Arial, sans-serif" font-size="25" font-weight="800" text-anchor="middle">AL</text>
 </svg>

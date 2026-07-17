@@ -69,7 +69,7 @@ def fetch_feed():
                 last_err = err
                 print(f"warn: fetch {url} attempt {attempt + 1} failed: {err}", file=sys.stderr)
             time.sleep(3 * (attempt + 1))
-    raise last_err
+    raise last_err  # pyright: ignore[reportGeneralTypeIssues]
 
 
 def image_from_item(item):

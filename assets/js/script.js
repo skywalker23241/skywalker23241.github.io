@@ -22,6 +22,7 @@ const themeToggleBtn = document.querySelector("[data-theme-btn]");
 themeToggleBtn.addEventListener("click", function () {
   const nextTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
   document.documentElement.setAttribute("data-theme", nextTheme);
+  document.querySelector('meta[name="theme-color"]').content = nextTheme === "light" ? "#fafaf7" : "#1a1a1a";
   localStorage.setItem("theme", nextTheme);
 });
 

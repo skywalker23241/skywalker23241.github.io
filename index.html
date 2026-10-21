@@ -8,7 +8,7 @@
     <title>Abo Le | Web Developer</title>
     <meta name="description" content="Abo Le 的个人主页，展示 Web development、AI 工具、项目作品和技术博客。">
     <meta name="author" content="Abo Le">
-    <meta name="theme-color" content="#ffb347">
+    <meta name="theme-color" content="#fafaf7">
     <link rel="canonical" href="https://resume.abohack.com/">
 
     <meta property="og:type" content="website">
@@ -30,6 +30,7 @@
             var theme = localStorage.getItem("theme")
                 || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
             document.documentElement.setAttribute("data-theme", theme);
+            document.querySelector('meta[name="theme-color"]').content = theme === "light" ? "#fafaf7" : "#1a1a1a";
         })();
     </script>
 
@@ -73,7 +74,7 @@
                 </figure>
 
                 <div class="info-content">
-                    <h1 class="name" title="Richard hanrick">Abo Le</h1>
+                    <h1 class="name" title="Abo Le">Abo Le</h1>
 
                     <p class="title">Web developer</p>
                 </div>

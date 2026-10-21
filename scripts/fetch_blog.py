@@ -1,11 +1,7 @@
-"""Fetch the blog RSS feed and write static Blog cards into index.html.
+"""Fetch the latest RSS posts and render lightweight, image-free blog cards.
 
-Fetches https://blog.abohack.com/rss.xml directly (rss.beauty proxy as
-fallback) and bakes the latest posts into the static page.
-
-Covers come from each article's og:image meta tag (with the image embedded in
-the RSS item as fallback). If the feed cannot be fetched or parsed, the script
-leaves index.html untouched and exits 0 so the scheduled workflow stays green.
+If the feed is unavailable, keep the existing cards unchanged.
+Only the RSS feed is fetched; article pages and OG images are not requested.
 """
 
 import re
@@ -13,38 +9,26 @@ import sys
 import time
 import urllib.request
 from email.utils import parsedate_to_datetime
-from html import escape, unescape
+from html import escape
 from pathlib import Path
-from urllib.parse import urljoin
 from xml.etree import ElementTree
 
 RSS_URLS = [
     "https://blog.abohack.com/rss.xml",
-    "https://rss.beauty/rss?url=https%3A%2F%2Fblog.abohack.com%2Frss.xml",  # proxy fallback
+    "https://rss.beauty/rss?url=https%3A%2F%2Fblog.abohack.com%2Frss.xml",
 ]
 ROOT = Path(__file__).resolve().parent.parent
 INDEX = ROOT / "index.html"
 MAX_POSTS = 4
 FETCH_ATTEMPTS = 3
-NS = {
-    "content": "http://purl.org/rss/1.0/modules/content/",
-    "media": "http://search.yahoo.com/mrss/",
-}
 START = "                        <!-- BLOG_POSTS_START -->"
 END = "                        <!-- BLOG_POSTS_END -->"
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
-DEFAULT_COVER = "./assets/images/blog-1.svg"
+TITLE_RE = re.compile(r"^「([^」]+)」\s*(?:[-—–]\s*)?(.*)$")
 
-# titles look like 「分类」- 文章标题
-TITLE_RE = re.compile(r"^「(.+?)」\s*-\s*(.*)$")
-
-# og:image with either attribute order
-OG_IMAGE_RES = [
-    re.compile(r'<meta[^>]+(?:property|name)=["\']og:image["\'][^>]*?content=["\']([^"\']+)["\']', re.I),
-    re.compile(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]*?(?:property|name)=["\']og:image["\']', re.I),
-]
-IMG_SRC_RE = re.compile(r'<img[^>]+src=["\']([^"\']+)["\']', re.I)
+ARTICLE_ICON = '<svg class="ph-icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM184,96a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,96Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,128Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,160Z"/></svg>'
+ARROW_ICON = '<svg class="ph-icon blog-open-icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>'
 
 
 def fetch(url, timeout=30):
@@ -72,102 +56,58 @@ def fetch_feed():
     raise last_err  # pyright: ignore[reportGeneralTypeIssues]
 
 
-def image_from_item(item):
-    """Image embedded in the RSS item itself, if any."""
-    enclosure = item.find("enclosure")
-    if enclosure is not None:
-        url = (enclosure.get("url") or "").strip()
-        if url.startswith("http") and enclosure.get("type", "image").startswith("image"):
-            return url
-    media = item.find("media:content", NS)
-    if media is not None and (media.get("url") or "").startswith("http"):
-        return media.get("url").strip()
-    body = item.findtext("content:encoded", default="", namespaces=NS) or item.findtext("description") or ""
-    m = IMG_SRC_RE.search(unescape(body))
-    if m and m.group(1).startswith("http"):
-        return m.group(1).strip()
-    return ""
-
-
-def og_image(link):
-    """og:image from the article page; empty string on any failure."""
-    if not link:
-        return ""
-    try:
-        page = fetch(link, timeout=20)
-    except Exception as err:
-        print(f"warn: cover fetch failed for {link}: {err}", file=sys.stderr)
-        return ""
-    for pattern in OG_IMAGE_RES:
-        m = pattern.search(page)
-        if m:
-            return urljoin(link, unescape(m.group(1)).strip())
-    return ""
+def render_card(post):
+    title = escape(post["title"], quote=True)
+    category = escape(post["category"], quote=True)
+    link = escape(post["link"], quote=True)
+    date = escape(post["date"], quote=True)
+    date_markup = f'<time class="blog-date" datetime="{date}">{date}</time>' if date else ""
+    return f'''                        <li class="blog-post-item">
+                            <a href="{link}" target="_blank" rel="noopener noreferrer">
+                                <div class="blog-card-top">
+                                    <div class="blog-icon-box">{ARTICLE_ICON}</div>
+                                    <span class="blog-category">{category}</span>
+                                    {ARROW_ICON}
+                                </div>
+                                <h3 class="blog-item-title">{title}</h3>
+                                {date_markup}
+                            </a>
+                        </li>'''
 
 
 def main():
     items = fetch_feed()
-
     posts = []
     for item in items:
         raw_title = (item.findtext("title") or "").strip()
-        m = TITLE_RE.match(raw_title)
-        title = m.group(2).strip() if m else raw_title
-        if not title:
+        match = TITLE_RE.match(raw_title)
+        title = match.group(2).strip() if match else raw_title
+        category = match.group(1).strip() if match else (item.findtext("category") or "随笔").strip()
+        link = (item.findtext("link") or "").strip()
+        if not title or not link.startswith(("https://", "http://")):
             continue
-
         pub = item.findtext("pubDate")
         try:
             date = parsedate_to_datetime(pub).date().isoformat() if pub else ""
         except (TypeError, ValueError):
             date = ""
+        posts.append({"title": title, "category": category, "link": link, "date": date})
 
-        posts.append({
-            "title": title,
-            "link": (item.findtext("link") or "").strip(),
-            "date": date,
-            "item": item,
-        })
-
-    posts.sort(key=lambda p: p["date"], reverse=True)
+    posts.sort(key=lambda post: post["date"], reverse=True)
     posts = posts[:MAX_POSTS]
     if not posts:
         raise RuntimeError("feed parsed but produced no usable posts")
-
-    cards = []
-    for post in posts:
-        cover = og_image(post["link"]) or image_from_item(post["item"]) or DEFAULT_COVER
-        title = escape(post["title"], quote=True)
-        link = escape(post["link"], quote=True)
-        date = escape(post["date"], quote=True)
-        image = escape(cover, quote=True)
-
-        cards.append(f'''                        <li class="blog-post-item">
-                            <a href="{link}" target="_blank" rel="noopener noreferrer">
-                                <figure class="blog-banner-box">
-                                    <img src="{image}" alt="{title}" loading="lazy">
-                                </figure>
-
-                                <div class="blog-content">
-                                    <div class="blog-meta">
-                                        <time datetime="{date}">{date}</time>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>''')
-
+    cards = [render_card(post) for post in posts]
     html = INDEX.read_text(encoding="utf-8")
     start = html.index(START) + len(START)
     end = html.index(END)
-    updated = html[:start] + "\n" + "\n\n".join(cards) + "\n" + html[end:]
-    INDEX.write_text(updated, encoding="utf-8")
-    print(f"wrote {len(posts)} static blog posts to {INDEX}")
+    INDEX.write_text(html[:start] + "\n" + "\n\n".join(cards) + "\n" + html[end:], encoding="utf-8")
+    print(f"wrote {len(posts)} text blog cards to {INDEX}")
 
 
 if __name__ == "__main__":
     try:
         main()
     except Exception as err:
-        # keep the existing cards and let the scheduled workflow stay green
         print(f"warn: blog sync skipped, keeping existing content: {err}", file=sys.stderr)
         sys.exit(0)

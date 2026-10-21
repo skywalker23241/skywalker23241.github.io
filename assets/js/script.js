@@ -16,18 +16,6 @@ sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); }
 
 
 
-// theme toggle (initial theme is applied by the inline script in <head>)
-const themeToggleBtn = document.querySelector("[data-theme-btn]");
-
-themeToggleBtn.addEventListener("click", function () {
-  const nextTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", nextTheme);
-  document.querySelector('meta[name="theme-color"]').content = nextTheme === "light" ? "#fafaf7" : "#1a1a1a";
-  localStorage.setItem("theme", nextTheme);
-});
-
-
-
 // custom select variables
 const select = document.querySelector("[data-select]");
 const selectItems = document.querySelectorAll("[data-select-item]");
@@ -159,10 +147,12 @@ for (let i = 0; i < navigationLinks.length; i++) {
       if (targetPage === pages[i].dataset.page) {
         pages[i].classList.add("active");
         navigationLinks[i].classList.add("active");
+        navigationLinks[i].setAttribute("aria-current", "page");
         window.scrollTo(0, 0);
       } else {
         pages[i].classList.remove("active");
         navigationLinks[i].classList.remove("active");
+        navigationLinks[i].removeAttribute("aria-current");
       }
     }
 

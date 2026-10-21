@@ -23,14 +23,18 @@
     <meta name="twitter:image" content="https://resume.abohack.com/assets/images/my-avatar.png">
 
     <!--
-    - apply saved theme before first paint to avoid a flash of wrong theme
+    - follow the system theme before first paint and when it changes
   -->
     <script>
         (function () {
-            var theme = localStorage.getItem("theme")
-                || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-            document.documentElement.setAttribute("data-theme", theme);
-            document.querySelector('meta[name="theme-color"]').content = theme === "light" ? "#fafaf7" : "#1a1a1a";
+            var preference = window.matchMedia("(prefers-color-scheme: dark)");
+            function applySystemTheme() {
+                var theme = preference.matches ? "dark" : "light";
+                document.documentElement.setAttribute("data-theme", theme);
+                document.querySelector('meta[name="theme-color"]').content = theme === "light" ? "#fafaf7" : "#1a1a1a";
+            }
+            applySystemTheme();
+            preference.addEventListener("change", applySystemTheme);
         })();
     </script>
 
@@ -43,7 +47,7 @@
     <!--
     - custom css link
   -->
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/style.css?v=47c3352270">
 
     <!--
     - google font link
@@ -70,7 +74,10 @@
             <div class="sidebar-info">
 
                 <figure class="avatar-box">
-                    <img src="./assets/images/my-avatar.png" alt="Abo Le" width="80">
+                    <button class="avatar-button" type="button" aria-label="Replay avatar greeting" title="Replay greeting">
+                        <img src="./assets/images/my-avatar.png" alt="Abo Le" width="80">
+                        <canvas class="avatar-canvas" aria-hidden="true"></canvas>
+                    </button>
                 </figure>
 
                 <div class="info-content">
@@ -79,10 +86,10 @@
                     <p class="title">Web developer</p>
                 </div>
 
-                <button class="info_more-btn" data-sidebar-btn>
+                <button class="info_more-btn" data-sidebar-btn aria-label="Show contacts">
                     <span>Show Contacts</span>
 
-                    <ion-icon name="chevron-down"></ion-icon>
+                    <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>
                 </button>
 
             </div>
@@ -96,7 +103,7 @@
                     <li class="contact-item">
 
                         <div class="icon-box">
-                            <ion-icon name="mail-outline"></ion-icon>
+                            <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48Zm-96,85.15L52.57,64H203.43ZM98.71,128,40,181.81V74.19Zm11.84,10.85,12,11.05a8,8,0,0,0,10.82,0l12-11.05,58,53.15H52.57ZM157.29,128,216,74.18V181.82Z"/></svg>
                         </div>
 
                         <div class="contact-info">
@@ -110,7 +117,7 @@
                     <li class="contact-item">
 
                         <div class="icon-box">
-                            <ion-icon name="phone-portrait-outline"></ion-icon>
+                            <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M176,16H80A24,24,0,0,0,56,40V216a24,24,0,0,0,24,24h96a24,24,0,0,0,24-24V40A24,24,0,0,0,176,16ZM72,64H184V192H72Zm8-32h96a8,8,0,0,1,8,8v8H72V40A8,8,0,0,1,80,32Zm96,192H80a8,8,0,0,1-8-8v-8H184v8A8,8,0,0,1,176,224Z"/></svg>
                         </div>
 
                         <div class="contact-info">
@@ -124,7 +131,7 @@
                     <li class="contact-item">
 
                         <div class="icon-box">
-                            <ion-icon name="calendar-outline"></ion-icon>
+                            <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"/></svg>
                         </div>
 
                         <div class="contact-info">
@@ -138,7 +145,7 @@
                     <li class="contact-item">
 
                         <div class="icon-box">
-                            <ion-icon name="location-outline"></ion-icon>
+                            <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z"/></svg>
                         </div>
 
                         <div class="contact-info">
@@ -157,25 +164,25 @@
 
                     <li class="social-item">
                         <a href="https://github.com/skywalker23241" class="social-link" aria-label="GitHub">
-                            <ion-icon name="logo-github"></ion-icon>
+                            <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
                         </a>
                     </li>
 
                     <li class="social-item">
-                        <a href="https://www.facebook.com/profile.php?id=100069229418154" class="social-link">
-                            <ion-icon name="logo-facebook"></ion-icon>
+                        <a href="https://www.facebook.com/profile.php?id=100069229418154" class="social-link" aria-label="Facebook">
+                            <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm8,191.63V152h24a8,8,0,0,0,0-16H136V112a16,16,0,0,1,16-16h16a8,8,0,0,0,0-16H152a32,32,0,0,0-32,32v24H96a8,8,0,0,0,0,16h24v63.63a88,88,0,1,1,16,0Z"/></svg>
                         </a>
                     </li>
 
                     <li class="social-item">
-                        <a href="https://x.com/Leonozzzzz" class="social-link">
-                            <ion-icon name="logo-twitter"></ion-icon>
+                        <a href="https://x.com/Leonozzzzz" class="social-link" aria-label="X">
+                            <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M214.75,211.71l-62.6-98.38,61.77-67.95a8,8,0,0,0-11.84-10.76L143.24,99.34,102.75,35.71A8,8,0,0,0,96,32H48a8,8,0,0,0-6.75,12.3l62.6,98.37-61.77,68a8,8,0,1,0,11.84,10.76l58.84-64.72,40.49,63.63A8,8,0,0,0,160,224h48a8,8,0,0,0,6.75-12.29ZM164.39,208,62.57,48h29L193.43,208Z"/></svg>
                         </a>
                     </li>
 
                     <li class="social-item">
-                        <a href="https://www.instagram.com/poe18797842324/" class="social-link">
-                            <ion-icon name="logo-instagram"></ion-icon>
+                        <a href="https://www.instagram.com/poe18797842324/" class="social-link" aria-label="Instagram">
+                            <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>
                         </a>
                     </li>
 
@@ -199,37 +206,30 @@
         - #NAVBAR
       -->
 
-            <nav class="navbar">
+            <nav class="navbar" aria-label="Main navigation">
 
                 <ul class="navbar-list">
 
                     <li class="navbar-item">
-                        <button class="navbar-link  active" data-nav-link>About</button>
+                        <button class="navbar-link  active" aria-label="About" aria-current="page" data-nav-link><svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"/></svg><span>About</span></button>
                     </li>
 
                     <li class="navbar-item">
-                        <button class="navbar-link" data-nav-link>Resume</button>
+                        <button class="navbar-link" aria-label="Resume" data-nav-link><svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M216,56H176V48a24,24,0,0,0-24-24H104A24,24,0,0,0,80,48v8H40A16,16,0,0,0,24,72V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V72A16,16,0,0,0,216,56ZM96,48a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96ZM216,72v41.61A184,184,0,0,1,128,136a184.07,184.07,0,0,1-88-22.38V72Zm0,128H40V131.64A200.19,200.19,0,0,0,128,152a200.25,200.25,0,0,0,88-20.37V200ZM104,112a8,8,0,0,1,8-8h32a8,8,0,0,1,0,16H112A8,8,0,0,1,104,112Z"/></svg><span>Resume</span></button>
                     </li>
 
                     <li class="navbar-item">
-                        <button class="navbar-link" data-nav-link>Portfolio</button>
+                        <button class="navbar-link" aria-label="Portfolio" data-nav-link><svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z"/></svg><span>Portfolio</span></button>
                     </li>
 
                     <li class="navbar-item">
-                        <button class="navbar-link" data-nav-link>Blog</button>
+                        <button class="navbar-link" aria-label="Blog" data-nav-link><svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM184,96a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,96Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,128Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,160Z"/></svg><span>Blog</span></button>
                     </li>
 
                     <li class="navbar-item">
-                        <button class="navbar-link" data-nav-link>Contact</button>
+                        <button class="navbar-link" aria-label="Contact" data-nav-link><svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z"/></svg><span>Contact</span></button>
                     </li>
 
-                    <li class="navbar-item">
-                        <button class="navbar-link theme-toggle-btn" data-theme-btn
-                            aria-label="Toggle light and dark theme" title="Toggle theme">
-                            <ion-icon name="sunny-outline" class="theme-icon-sun"></ion-icon>
-                            <ion-icon name="moon-outline" class="theme-icon-moon"></ion-icon>
-                        </button>
-                    </li>
 
                 </ul>
 
@@ -283,7 +283,7 @@
                         <li class="service-item">
 
                             <div class="service-icon-box">
-                                <img src="./assets/images/icon-dev.svg" alt="Web development icon" width="40">
+                                <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M69.12,94.15,28.5,128l40.62,33.85a8,8,0,1,1-10.24,12.29l-48-40a8,8,0,0,1,0-12.29l48-40a8,8,0,0,1,10.24,12.3Zm176,27.7-48-40a8,8,0,1,0-10.24,12.3L227.5,128l-40.62,33.85a8,8,0,1,0,10.24,12.29l48-40a8,8,0,0,0,0-12.29ZM162.73,32.48a8,8,0,0,0-10.25,4.79l-64,176a8,8,0,0,0,4.79,10.26A8.14,8.14,0,0,0,96,224a8,8,0,0,0,7.52-5.27l64-176A8,8,0,0,0,162.73,32.48Z"/></svg>
                             </div>
 
                             <div class="service-content-box">
@@ -300,7 +300,7 @@
                         <li class="service-item">
 
                             <div class="service-icon-box">
-                                <img src="./assets/images/icon-seo.svg" alt="SEO icon" width="40">
+                                <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0V156.69l50.34-50.35a8,8,0,0,1,11.32,0L128,132.69,180.69,80H160a8,8,0,0,1,0-16h40a8,8,0,0,1,8,8v40a8,8,0,0,1-16,0V91.31l-58.34,58.35a8,8,0,0,1-11.32,0L96,123.31l-56,56V200H224A8,8,0,0,1,232,208Z"/></svg>
                             </div>
 
                             <div class="service-content-box">
@@ -317,7 +317,7 @@
                         <li class="service-item">
 
                             <div class="service-icon-box">
-                                <img src="./assets/images/icon-tools.svg" alt="tools icon" width="40">
+                                <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z"/></svg>
                             </div>
 
                             <div class="service-content-box">
@@ -334,7 +334,7 @@
                         <li class="service-item">
 
                             <div class="service-icon-box">
-                                <img src="./assets/images/icon-blog.svg" alt="blogging icon" width="40">
+                                <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M227.32,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H216a8,8,0,0,0,0-16H115.32l112-112A16,16,0,0,0,227.32,73.37ZM136,75.31,152.69,92,68,176.69,51.31,160ZM48,208V179.31L76.69,208Zm48-3.31L79.32,188,164,103.31,180.69,120Zm96-96L147.32,64l24-24L216,84.69Z"/></svg>
                             </div>
 
                             <div class="service-content-box">
@@ -374,7 +374,7 @@
 
                     <div class="title-wrapper">
                         <div class="icon-box">
-                            <ion-icon name="book-outline"></ion-icon>
+                            <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,216,128,216a130,130,0,0,0,48-8.76V240a8,8,0,0,0,16,0V199.51a115.63,115.63,0,0,0,27.94-22.57A15.91,15.91,0,0,0,224,166.29V117.87l27.76-14.81a8,8,0,0,0,0-14.12ZM128,200c-43.27,0-68.72-21.14-80-33.71V126.4l76.24,40.66a8,8,0,0,0,7.52,0L176,143.47v46.34C163.4,195.69,147.52,200,128,200Zm80-33.75a97.83,97.83,0,0,1-16,14.25V134.93l16-8.53ZM188,118.94l-.22-.13-56-29.87a8,8,0,0,0-7.52,14.12L171,128l-43,22.93L25,96,128,41.07,231,96Z"/></svg>
                         </div>
 
                         <h3 class="h3">Education</h3>
@@ -441,7 +441,7 @@
 
                     <div class="title-wrapper">
                         <div class="icon-box">
-                            <ion-icon name="book-outline"></ion-icon>
+                            <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M216,56H176V48a24,24,0,0,0-24-24H104A24,24,0,0,0,80,48v8H40A16,16,0,0,0,24,72V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V72A16,16,0,0,0,216,56ZM96,48a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96ZM216,72v41.61A184,184,0,0,1,128,136a184.07,184.07,0,0,1-88-22.38V72Zm0,128H40V131.64A200.19,200.19,0,0,0,128,152a200.25,200.25,0,0,0,88-20.37V200ZM104,112a8,8,0,0,1,8-8h32a8,8,0,0,1,0,16H112A8,8,0,0,1,104,112Z"/></svg>
                         </div>
 
                         <h3 class="h3">Experience</h3>
@@ -602,7 +602,7 @@
                             <div class="select-value" data-selecct-value>Select category</div>
 
                             <div class="select-icon">
-                                <ion-icon name="chevron-down"></ion-icon>
+                                <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>
                             </div>
 
                         </button>
@@ -630,113 +630,109 @@
                         <li class="project-item  active" data-filter-item data-category="applications">
                             <a href="https://restcal.abohack.com/" target="_blank" rel="noopener">
 
-                                <figure class="project-img">
-                                    <div class="project-item-icon-box">
-                                        <ion-icon name="eye-outline"></ion-icon>
+                                <div class="project-app-header">
+                                    <div class="project-app-icon project-app-icon--restcal">
+                                        <img src="./assets/images/apps/restcal.png" alt="" width="72" height="72" loading="lazy">
                                     </div>
-
-                                    <img src="./assets/images/restcal-cover.png" alt="RestCal 休历 - 出勤、请假与节假日规划工具"
-                                        loading="lazy">
-                                </figure>
+                                    <svg class="ph-icon project-open-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
+                                </div>
 
                                 <h3 class="project-title">RestCal 休历</h3>
+                                <p class="project-description">出勤记录、请假管理与节假日规划。</p>
 
                                 <p class="project-category">Applications · JavaScript + PWA</p>
 
                             </a>
                             <a href="https://github.com/skywalker23241/restcal-abohack" class="project-github" target="_blank"
                                 rel="noopener" aria-label="RestCal 的 GitHub 仓库">
-                                <ion-icon name="logo-github"></ion-icon>
+                                <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
                             </a>
                         </li>
 
                         <li class="project-item  active" data-filter-item data-category="applications">
                             <a href="https://budget.abohack.com/" target="_blank" rel="noopener">
 
-                                <figure class="project-img">
-                                    <div class="project-item-icon-box">
-                                        <ion-icon name="eye-outline"></ion-icon>
+                                <div class="project-app-header">
+                                    <div class="project-app-icon project-app-icon--budget">
+                                        <img src="./assets/images/apps/budget.svg" alt="" width="72" height="72" loading="lazy">
                                     </div>
-
-                                    <img src="./assets/images/budget-app-cover.png" alt="个人预算记账助手 - 预算、账单与储蓄目标管理"
-                                        loading="lazy">
-                                </figure>
+                                    <svg class="ph-icon project-open-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
+                                </div>
 
                                 <h3 class="project-title">个人预算记账助手</h3>
+                                <p class="project-description">管理日常账单、预算与储蓄目标。</p>
 
                                 <p class="project-category">Applications · React + TypeScript</p>
 
                             </a>
                             <a href="https://github.com/skywalker23241/personal-budget-app" class="project-github"
                                 target="_blank" rel="noopener" aria-label="个人预算记账助手的 GitHub 仓库">
-                                <ion-icon name="logo-github"></ion-icon>
+                                <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
                             </a>
                         </li>
 
                         <li class="project-item  active" data-filter-item data-category="applications">
                             <a href="https://val.abohack.com/" target="_blank" rel="noopener">
 
-                                <figure class="project-img">
-                                    <div class="project-item-icon-box">
-                                        <ion-icon name="eye-outline"></ion-icon>
+                                <div class="project-app-header">
+                                    <div class="project-app-icon project-app-icon--radiant">
+                                        <img src="./assets/images/apps/radiantshelf.png" alt="" width="72" height="72" loading="lazy">
                                     </div>
-                                    <img src="./assets/images/radiantshelf-cover.png"
-                                        alt="RadiantShelf - Valorant 每日商店 Webhook 推送工具" loading="lazy">
-                                </figure>
+                                    <svg class="ph-icon project-open-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
+                                </div>
 
                                 <h3 class="project-title">RadiantShelf</h3>
+                                <p class="project-description">将 Valorant 每日商店推送到 Webhook。</p>
 
                                 <p class="project-category">Applications · Python</p>
                             </a>
                             <a href="https://github.com/skywalker23241/radiantshelf" class="project-github"
                                 target="_blank" rel="noopener" aria-label="RadiantShelf 的 GitHub 仓库">
-                                <ion-icon name="logo-github"></ion-icon>
+                                <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
                             </a>
                         </li>
 
                         <li class="project-item  active" data-filter-item data-category="web development">
                             <a href="https://status.abohack.com/" target="_blank" rel="noopener">
 
-                                <figure class="project-img">
-                                    <div class="project-item-icon-box">
-                                        <ion-icon name="eye-outline"></ion-icon>
+                                <div class="project-app-header">
+                                    <div class="project-app-icon project-app-icon--status">
+                                        <img src="./assets/images/apps/status.ico" alt="" width="72" height="72" loading="lazy">
                                     </div>
-
-                                    <img src="./assets/images/scfi-status-cover.png"
-                                        alt="Sci-Fi Status Page Theme - UptimeFlare 科幻风格状态页主题" loading="lazy">
-                                </figure>
+                                    <svg class="ph-icon project-open-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
+                                </div>
 
                                 <h3 class="project-title">Sci-Fi Status Page Theme</h3>
+                                <p class="project-description">基于 UptimeFlare 的科幻风格状态页主题。</p>
 
                                 <p class="project-category">Web development · Next.js + Cloudflare</p>
 
                             </a>
                             <a href="https://github.com/skywalker23241/scfi-web-status-theme" class="project-github"
                                 target="_blank" rel="noopener" aria-label="Sci-Fi Status Page Theme 的 GitHub 仓库">
-                                <ion-icon name="logo-github"></ion-icon>
+                                <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
                             </a>
                         </li>
 
                         <li class="project-item  active" data-filter-item data-category="web development">
                             <a href="https://blog-temple.abohack.com/" target="_blank" rel="noopener">
 
-                                <figure class="project-img">
-                                    <div class="project-item-icon-box">
-                                        <ion-icon name="eye-outline"></ion-icon>
+                                <div class="project-app-header">
+                                    <div class="project-app-icon project-app-icon--astro">
+                                        <img src="./assets/images/apps/astro-blog.png" alt="" width="72" height="72" loading="lazy">
                                     </div>
-
-                                    <img src="./assets/images/astro-blog-theme-cover.png"
-                                        alt="Abo Astro Blog Theme - 极简 Astro 博客主题" loading="lazy">
-                                </figure>
+                                    <svg class="ph-icon project-open-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
+                                </div>
 
                                 <h3 class="project-title">Abo Astro Blog Theme</h3>
+                                <p class="project-description">用 Astro 打造轻量、简洁的个人博客。</p>
 
                                 <p class="project-category">Web development · Astro</p>
 
                             </a>
                             <a href="https://github.com/skywalker23241/abo-astro-blog-theme" class="project-github"
                                 target="_blank" rel="noopener" aria-label="Abo Astro Blog Theme 的 GitHub 仓库">
-                                <ion-icon name="logo-github"></ion-icon>
+                                <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
                             </a>
                         </li>
                     </ul>
@@ -765,57 +761,49 @@
                         <!-- BLOG_POSTS_START -->
                         <li class="blog-post-item">
                             <a href="https://blog.abohack.com/life-at-one-percent-battery" target="_blank" rel="noopener noreferrer">
-                                <figure class="blog-banner-box">
-                                    <img src="https://blog.abohack.com/open-graph/life-at-one-percent-battery.png" alt="「生活」当生活只剩 1% 的电量" loading="lazy">
-                                </figure>
-
-                                <div class="blog-content">
-                                    <div class="blog-meta">
-                                        <time datetime="2026-10-08">2026-10-08</time>
-                                    </div>
+                                <div class="blog-card-top">
+                                    <div class="blog-icon-box"><svg class="ph-icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM184,96a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,96Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,128Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,160Z"/></svg></div>
+                                    <span class="blog-category">生活</span>
+                                    <svg class="ph-icon blog-open-icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
                                 </div>
+                                <h3 class="blog-item-title">当生活只剩 1% 的电量</h3>
+                                <time class="blog-date" datetime="2026-10-08">2026-10-08</time>
                             </a>
                         </li>
 
                         <li class="blog-post-item">
                             <a href="https://blog.abohack.com/yasb-codex-usage-open-source-pr" target="_blank" rel="noopener noreferrer">
-                                <figure class="blog-banner-box">
-                                    <img src="https://blog.abohack.com/open-graph/yasb-codex-usage-open-source-pr.png" alt="「开源」 YASB Codex Usage Widget" loading="lazy">
-                                </figure>
-
-                                <div class="blog-content">
-                                    <div class="blog-meta">
-                                        <time datetime="2026-08-25">2026-08-25</time>
-                                    </div>
+                                <div class="blog-card-top">
+                                    <div class="blog-icon-box"><svg class="ph-icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM184,96a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,96Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,128Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,160Z"/></svg></div>
+                                    <span class="blog-category">开源</span>
+                                    <svg class="ph-icon blog-open-icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
                                 </div>
+                                <h3 class="blog-item-title">YASB Codex Usage Widget</h3>
+                                <time class="blog-date" datetime="2026-08-25">2026-08-25</time>
                             </a>
                         </li>
 
                         <li class="blog-post-item">
                             <a href="https://blog.abohack.com/new-router-for-my-home" target="_blank" rel="noopener noreferrer">
-                                <figure class="blog-banner-box">
-                                    <img src="https://blog.abohack.com/open-graph/new-router-for-my-home.png" alt="「配置」 TPlink路由器设置" loading="lazy">
-                                </figure>
-
-                                <div class="blog-content">
-                                    <div class="blog-meta">
-                                        <time datetime="2026-08-11">2026-08-11</time>
-                                    </div>
+                                <div class="blog-card-top">
+                                    <div class="blog-icon-box"><svg class="ph-icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM184,96a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,96Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,128Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,160Z"/></svg></div>
+                                    <span class="blog-category">配置</span>
+                                    <svg class="ph-icon blog-open-icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
                                 </div>
+                                <h3 class="blog-item-title">TPlink路由器设置</h3>
+                                <time class="blog-date" datetime="2026-08-11">2026-08-11</time>
                             </a>
                         </li>
 
                         <li class="blog-post-item">
                             <a href="https://blog.abohack.com/my-think-about-i" target="_blank" rel="noopener noreferrer">
-                                <figure class="blog-banner-box">
-                                    <img src="https://blog.abohack.com/open-graph/my-think-about-i.png" alt="「生活」 我对我的一些思考" loading="lazy">
-                                </figure>
-
-                                <div class="blog-content">
-                                    <div class="blog-meta">
-                                        <time datetime="2026-07-20">2026-07-20</time>
-                                    </div>
+                                <div class="blog-card-top">
+                                    <div class="blog-icon-box"><svg class="ph-icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM184,96a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,96Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,128Zm0,32a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h96A8,8,0,0,1,184,160Z"/></svg></div>
+                                    <span class="blog-category">生活</span>
+                                    <svg class="ph-icon blog-open-icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
                                 </div>
+                                <h3 class="blog-item-title">我对我的一些思考</h3>
+                                <time class="blog-date" datetime="2026-07-20">2026-07-20</time>
                             </a>
                         </li>
                         <!-- BLOG_POSTS_END -->
@@ -868,7 +856,7 @@
                         <p class="form-status" data-form-status hidden></p>
 
                         <button class="form-btn" type="submit" disabled data-form-btn>
-                            <ion-icon name="paper-plane"></ion-icon>
+                            <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M227.32,28.68a16,16,0,0,0-15.66-4.08l-.15,0L19.57,82.84a16,16,0,0,0-2.49,29.8L102,154l41.3,84.87A15.86,15.86,0,0,0,157.74,248q.69,0,1.38-.06a15.88,15.88,0,0,0,14-11.51l58.2-191.94c0-.05,0-.1,0-.15A16,16,0,0,0,227.32,28.68ZM157.83,231.85l-.05.14,0-.07-40.06-82.3,48-48a8,8,0,0,0-11.31-11.31l-48,48L24.08,98.25l-.07,0,.14,0L216,40Z"/></svg>
                             <span>Send Message</span>
                         </button>
 
@@ -890,13 +878,9 @@
     <!--
     - custom js link
   -->
-    <script src="./assets/js/script.js"></script>
+    <script defer src="./assets/js/avatar.js?v=36014d1c16"></script>
+    <script src="./assets/js/script.js?v=eb4d70439e"></script>
 
-    <!--
-    - ionicon link
-  -->
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 </body>
 

@@ -32,7 +32,7 @@ It is designed to be:
 - Portfolio section with category filtering
 - Blog section linking to selected external blog posts
 - Contact section with embedded map and Formspree-powered message form
-- Light / dark theme toggle with saved user preference
+- Automatic light / dark theme following the system preference
 - Responsive layout for desktop and mobile screens
 
 ---
@@ -54,7 +54,7 @@ It is designed to be:
 | Structure | HTML5 |
 | Styling | CSS3 |
 | Interaction | Vanilla JavaScript |
-| Icons | Ionicons |
+| Icons | Phosphor Icons 2.1.1 (inline SVG, MIT) |
 | Fonts | Google Fonts / Poppins |
 | Contact Form | Formspree |
 | Hosting | GitHub Pages |
@@ -72,8 +72,8 @@ It is designed to be:
     ├── css/
     │   └── style.css       # Main responsive styling
     ├── js/
-    │   └── script.js       # Navigation, filtering, theme toggle, form logic
-    └── images/             # Avatar, icons, project covers, and blog covers
+    │   └── script.js       # Navigation, filtering, form logic
+    └── images/             # Avatar, application icons, and blog covers
 ```
 
 ---
@@ -119,6 +119,17 @@ After changes are pushed to the main branch, GitHub Pages will publish the lates
 
 ## Maintenance Notes
 
+Blog uses lightweight text cards with inline Phosphor icons, category, title,
+and date. The scheduled sync only fetches the RSS feed; it does not request
+article pages or OG images. No image dependencies or third-party Python packages
+are required. If RSS is unavailable, the existing cards remain unchanged.
+
+To refresh blog posts locally:
+
+```bash
+python scripts/fetch_blog.py
+```
+
 Common updates can be made in these files:
 
 | Task | File |
@@ -152,3 +163,13 @@ Common updates can be made in these files:
 ## License
 
 This repository is currently maintained as a personal homepage project. If you want to reuse the layout or content, please keep attribution where appropriate.
+
+### Icon assets
+
+Interface icons are a local subset of [Phosphor Icons](https://github.com/phosphor-icons/core) 2.1.1. Their SVG paths are embedded directly in `index.html` so icons also render when opening the page through `file://`. The source sprite and MIT license are kept in `assets/icons/`. Copy the corresponding symbol paths into `<svg class="ph-icon" viewBox="0 0 256 256" aria-hidden="true">...</svg>` when adding an icon.
+
+Portfolio icons in `assets/images/apps/` are copied from the corresponding project repositories: RestCal (`public/assets/icons/icon-192.png`), personal-budget-app (`public/logo.svg`), RadiantShelf (`static/apple-touch-icon.png`), scfi-web-status-theme (`public/favicon.ico`), and abo-astro-blog-theme (`public/apple-touch-icon.png`).
+
+### Animated avatar
+
+The avatar plays a brief nod and blink after the page loads. Click the avatar for the full pre-rendered 3D greeting, including looking around and waving the left hand. Playback pre-caches the aligned frames and uses a continuous timeline with additive transitions to avoid pauses and opacity flicker. `assets/js/avatar.js` draws the local 4×4 WebP sprite sheet and normalizes head positions. The original portrait remains available when JavaScript, canvas, or the optional animation asset is unavailable. Reduced-motion preferences skip the animation download. The imagegen prompt and original sprite sheet are saved in `assets/images/avatar-3d/`; only `greeting.webp` is requested by the page.

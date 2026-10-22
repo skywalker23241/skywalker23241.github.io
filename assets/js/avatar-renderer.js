@@ -4223,3 +4223,5 @@ void main() {
  * Copyright 2010-2026 Three.js Authors
  * SPDX-License-Identifier: MIT
  */
+
+export{Fe as Group,ye as Mesh,us as SphereGeometry,ds as TubeGeometry,Ii as CatmullRomCurve3,N as Vector3,Pi as MeshStandardMaterial,bn as MeshBasicMaterial,Le as BufferGeometry,re as Float32BufferAttribute,is as Scene,Vn as OrthographicCamera,Ra as WebGLRenderer,ms as HemisphereLight,Li as DirectionalLight,He as DoubleSide};

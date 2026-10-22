@@ -383,26 +383,10 @@ main {
   overflow: hidden;
 }
 
-.avatar-button {
-  position: relative;
+.avatar-box > img {
   display: block;
-  border-radius: inherit;
-  overflow: hidden;
-  line-height: 0;
+  height: auto;
 }
-
-.avatar-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.avatar-box.is-animated .avatar-button > img { opacity: 0; }
-.avatar-box.is-animated .avatar-canvas { opacity: 1; }
-.avatar-button:focus-visible { outline-offset: -4px; }
 
 .info-content .name {
   color: var(--white-2);
@@ -918,7 +902,8 @@ main {
 }
 
 .project-app-icon--restcal { --app-tint: rgba(91, 161, 240, 0.15); }
-.project-app-icon--budget { --app-tint: rgba(221, 174, 91, 0.15); }
+.project-app-icon--pennypeek { --app-tint: rgba(71, 123, 102, 0.15); }
+.project-app-icon--yasb { --app-tint: rgba(118, 133, 248, 0.15); }
 .project-app-icon--radiant { --app-tint: rgba(248, 88, 112, 0.15); }
 .project-app-icon--status { --app-tint: rgba(118, 133, 248, 0.15); }
 .project-app-icon--astro { --app-tint: rgba(171, 118, 225, 0.15); }

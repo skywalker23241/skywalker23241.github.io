@@ -47,7 +47,7 @@
     <!--
     - custom css link
   -->
-    <link rel="stylesheet" href="./assets/css/style.css?v=47c3352270">
+    <link rel="stylesheet" href="./assets/css/style.css?v=portfolio-pennypeek-1">
 
     <!--
     - google font link
@@ -74,10 +74,7 @@
             <div class="sidebar-info">
 
                 <figure class="avatar-box">
-                    <button class="avatar-button" type="button" aria-label="Replay avatar nod" title="Replay nod">
-                        <img src="./assets/images/my-avatar.png" alt="Abo Le" width="80">
-                        <canvas class="avatar-canvas" aria-hidden="true"></canvas>
-                    </button>
+                    <img src="./assets/images/my-avatar.png" alt="Abo Le" width="80" height="80">
                 </figure>
 
                 <div class="info-content">
@@ -325,7 +322,7 @@
 
                                 <p class="service-item-text">
                                     Turning ideas into small, practical products like RestCal, RadiantShelf, and a
-                                    personal budget app.
+                                    PennyPeek personal finance app.
                                 </p>
                             </div>
 
@@ -590,6 +587,10 @@
                         </li>
 
                         <li class="filter-item">
+                            <button data-filter-btn>Plugins</button>
+                        </li>
+
+                        <li class="filter-item">
                             <button data-filter-btn>Web development</button>
                         </li>
 
@@ -615,6 +616,10 @@
 
                             <li class="select-item">
                                 <button data-select-item>Applications</button>
+                            </li>
+
+                            <li class="select-item">
+                                <button data-select-item>Plugins</button>
                             </li>
 
                             <li class="select-item">
@@ -650,23 +655,23 @@
                         </li>
 
                         <li class="project-item  active" data-filter-item data-category="applications">
-                            <a href="https://budget.abohack.com/" target="_blank" rel="noopener">
+                            <a href="https://pennypeek.abohack.com/" target="_blank" rel="noopener">
 
                                 <div class="project-app-header">
-                                    <div class="project-app-icon project-app-icon--budget">
-                                        <img src="./assets/images/apps/budget.svg" alt="" width="72" height="72" loading="lazy">
+                                    <div class="project-app-icon project-app-icon--pennypeek">
+                                        <img src="./assets/images/apps/pennypeek.svg" alt="" width="72" height="72" loading="lazy">
                                     </div>
                                     <svg class="ph-icon project-open-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
                                 </div>
 
-                                <h3 class="project-title">个人预算记账助手</h3>
+                                <h3 class="project-title">PennyPeek</h3>
                                 <p class="project-description">管理日常账单、预算与储蓄目标。</p>
 
                                 <p class="project-category">Applications · React + TypeScript</p>
 
                             </a>
-                            <a href="https://github.com/skywalker23241/personal-budget-app" class="project-github"
-                                target="_blank" rel="noopener" aria-label="个人预算记账助手的 GitHub 仓库">
+                            <a href="https://github.com/skywalker23241/budget-abohack" class="project-github"
+                                target="_blank" rel="noopener" aria-label="PennyPeek 的 GitHub 仓库">
                                 <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
                             </a>
                         </li>
@@ -688,6 +693,26 @@
                             </a>
                             <a href="https://github.com/skywalker23241/radiantshelf" class="project-github"
                                 target="_blank" rel="noopener" aria-label="RadiantShelf 的 GitHub 仓库">
+                                <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
+                            </a>
+                        </li>
+
+                        <li class="project-item  active" data-filter-item data-category="plugins">
+                            <a href="https://github.com/amnweb/yasb/wiki/(Widget)-Codex-Usage" target="_blank" rel="noopener">
+
+                                <div class="project-app-header">
+                                    <div class="project-app-icon project-app-icon--yasb">
+                                        <img src="./assets/images/apps/yasb.png" alt="" width="72" height="72" loading="lazy">
+                                    </div>
+                                    <svg class="ph-icon project-open-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
+                                </div>
+
+                                <h3 class="project-title">YASB · Codex Usage</h3>
+                                <p class="project-description">在状态栏查看 Codex 额度、Token 用量与重置时间。</p>
+                                <p class="project-category">Plugins · Python</p>
+                            </a>
+                            <a href="https://github.com/amnweb/yasb/blob/main/src/core/widgets/yasb/codex_usage.py" class="project-github"
+                                target="_blank" rel="noopener" aria-label="查看 Codex Usage 插件的 GitHub 源码">
                                 <svg class="ph-icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
                             </a>
                         </li>
@@ -878,7 +903,6 @@
     <!--
     - custom js link
   -->
-    <script defer src="./assets/js/avatar.js?v=tripo-glb-1"></script>
     <script src="./assets/js/script.js?v=eb4d70439e"></script>
 
 

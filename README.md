@@ -44,6 +44,8 @@ It is designed to be:
 | **RestCal 休历** | Application | [Open project](https://skywalker23241.github.io/restcal/) |
 | **Abo Blog** | Web development | [Open blog](https://jackcooper.qzz.io/) |
 | **RadiantShelf** | Application | [Open project](https://playvalorant.qzz.io/) |
+| **PennyPeek** | Application | [Open project](https://pennypeek.abohack.com/) |
+| **YASB · Codex Usage** | Plugin | [Widget documentation](https://github.com/amnweb/yasb/wiki/(Widget)-Codex-Usage) |
 
 ---
 
@@ -168,8 +170,8 @@ This repository is currently maintained as a personal homepage project. If you w
 
 Interface icons are a local subset of [Phosphor Icons](https://github.com/phosphor-icons/core) 2.1.1. Their SVG paths are embedded directly in `index.html` so icons also render when opening the page through `file://`. The source sprite and MIT license are kept in `assets/icons/`. Copy the corresponding symbol paths into `<svg class="ph-icon" viewBox="0 0 256 256" aria-hidden="true">...</svg>` when adding an icon.
 
-Portfolio icons in `assets/images/apps/` are copied from the corresponding project repositories: RestCal (`public/assets/icons/icon-192.png`), personal-budget-app (`public/logo.svg`), RadiantShelf (`static/apple-touch-icon.png`), scfi-web-status-theme (`public/favicon.ico`), and abo-astro-blog-theme (`public/apple-touch-icon.png`).
+Portfolio icons in `assets/images/apps/` are copied from the corresponding project repositories: RestCal (`public/assets/icons/icon-192.png`), PennyPeek / budget-abohack (`public/logo.svg`), RadiantShelf (`static/apple-touch-icon.png`), scfi-web-status-theme (`public/favicon.ico`), abo-astro-blog-theme (`public/apple-touch-icon.png`), and YASB (`src/assets/images/app_icon.png`). The YASB icon represents the host application of the Codex Usage widget.
 
-### Animated avatar
+### Avatar
 
-The avatar plays a brief nod and blink after the page loads. Click the avatar for the full pre-rendered 3D greeting, including looking around and waving the left hand. Playback pre-caches the aligned frames and uses a continuous timeline with additive transitions to avoid pauses and opacity flicker. `assets/js/avatar.js` draws the local 4×4 WebP sprite sheet and normalizes head positions. The original portrait remains available when JavaScript, canvas, or the optional animation asset is unavailable. Reduced-motion preferences skip the animation download. The imagegen prompt and original sprite sheet are saved in `assets/images/avatar-3d/`; only `greeting.webp` is requested by the page.
+The sidebar displays the original static portrait in `assets/images/my-avatar.png`.

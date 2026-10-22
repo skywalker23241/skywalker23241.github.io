@@ -31,7 +31,7 @@
     initialization = (async () => {
       if (!portrait.complete && portrait.decode) await portrait.decode();
       if (!portrait.naturalWidth) throw new Error('Portrait unavailable');
-      library = await import(new URL('./avatar-renderer-v2.js?v=2', scriptURL).href);
+      library = await import(new URL('./avatar-renderer.js?v=1d7ec25cbe', scriptURL).href);
       scene = library.createAvatarScene(canvas, portrait);
       resize();
       if (!motion.matches) box.classList.add('is-animated');

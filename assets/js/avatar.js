@@ -1,4 +1,4 @@
-/* Lazy-loaded nod-only 3D avatar; original portrait remains the fallback. */
+/* Lazy-loaded 3D avatar with a gentle nod and smooth cursor tracking. */
 (() => {
   'use strict';
   const box = document.querySelector('.avatar-box');
@@ -16,12 +16,49 @@
   let token = 0;
   let visible = true;
   let contextLost = false;
+  let followFrameId = 0;
+  let lastFollowFrame = 0;
+  // In radians: about 8 degrees horizontally and 5 degrees vertically.
+  const gaze = { yaw: 0, pitch: 0, targetYaw: 0, targetPitch: 0 };
 
   function neutral() { return library.sampleGreeting(0); }
+
+  function drawIdle() {
+    if (!scene || contextLost) return;
+    const pose = neutral();
+    pose.yaw = gaze.yaw;
+    pose.pitch += gaze.pitch;
+    scene.render(pose);
+  }
+
+  function followFrame(now) {
+    followFrameId = 0;
+    if (!scene || playing || motion.matches || document.hidden || !visible || contextLost) return;
+    const elapsed = lastFollowFrame ? Math.min(0.05, (now - lastFollowFrame) / 1000) : 1 / 60;
+    lastFollowFrame = now;
+    const smooth = 1 - Math.exp(-10 * elapsed);
+    gaze.yaw += (gaze.targetYaw - gaze.yaw) * smooth;
+    gaze.pitch += (gaze.targetPitch - gaze.pitch) * smooth;
+    drawIdle();
+    if (Math.abs(gaze.targetYaw - gaze.yaw) + Math.abs(gaze.targetPitch - gaze.pitch) > 0.0006) {
+      followFrameId = requestAnimationFrame(followFrame);
+    }
+  }
+
+  function scheduleFollow() {
+    if (followFrameId || !scene || playing || motion.matches || document.hidden || !visible || contextLost) return;
+    lastFollowFrame = 0;
+    followFrameId = requestAnimationFrame(followFrame);
+  }
+
+  function resetPointer() {
+    gaze.targetYaw = gaze.targetPitch = 0;
+    scheduleFollow();
+  }
   function resize() {
     if (!scene) return;
     const size = Math.round(button.getBoundingClientRect().width);
-    if (size) { scene.setSize(size); scene.render(neutral()); }
+    if (size) { scene.setSize(size); drawIdle(); }
   }
 
   async function initialize() {
@@ -47,10 +84,19 @@
 
   function stop(renderNeutral = true) {
     cancelAnimationFrame(animationId);
+    cancelAnimationFrame(followFrameId);
     animationId = 0;
+    followFrameId = 0;
+    lastFollowFrame = 0;
     token += 1;
     playing = false;
-    if (renderNeutral && scene && !contextLost) scene.render(neutral());
+    if (!renderNeutral) {
+      // The nod remains straight ahead; mouse tracking eases back afterward.
+      gaze.yaw = gaze.pitch = 0;
+    } else if (scene && !contextLost) {
+      drawIdle();
+      scheduleFollow();
+    }
   }
 
   async function play(kind = 'full') {
@@ -73,13 +119,34 @@
     animationId = requestAnimationFrame(tick);
   }
 
+  // Follow a desktop pointer across the page, not only inside the avatar tile.
+  // Render only while easing toward a new target; do not run a permanent loop.
+  window.addEventListener('pointermove', event => {
+    if (event.pointerType === 'touch' || motion.matches || document.hidden || !visible) return;
+    const rect = button.getBoundingClientRect();
+    if (!rect.width) return;
+    const x = (event.clientX - rect.left - rect.width / 2) / Math.max(window.innerWidth * .42, 280);
+    const y = (event.clientY - rect.top - rect.height / 2) / Math.max(window.innerHeight * .5, 260);
+    gaze.targetYaw = Math.max(-.14, Math.min(.14, x * .14));
+    gaze.targetPitch = Math.max(-.085, Math.min(.085, y * .085));
+    scheduleFollow();
+  }, { passive: true });
+  window.addEventListener('pointerout', event => {
+    if (!event.relatedTarget) resetPointer();
+  });
+  window.addEventListener('blur', resetPointer);
+
   button.addEventListener('click', () => play('intro'));
   motion.addEventListener('change', () => {
     stop();
-    if (motion.matches) { initialize().then(() => scene?.render(neutral())).catch(() => {}); }
-    else play('intro');
+    if (motion.matches) {
+      gaze.yaw = gaze.pitch = gaze.targetYaw = gaze.targetPitch = 0;
+      initialize().then(() => drawIdle()).catch(() => {});
+    } else {
+      play('intro');
+    }
   });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { resetPointer(); stop(); } });
   canvas.addEventListener('webglcontextlost', event => {
     event.preventDefault();
     contextLost = true;
@@ -94,7 +161,7 @@
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => {
       visible = entries[0].isIntersecting;
-      if (!visible) stop();
+      if (!visible) { resetPointer(); stop(); } else scheduleFollow();
     }).observe(button);
   }
   window.addEventListener('pagehide', event => { if (!event.persisted && scene) scene.dispose(); });

@@ -37,7 +37,7 @@ export async function createAvatarScene(canvas) {
     },
     render(pose) {
       if (disposed) return;
-      avatar.pivot.rotation.set(pose.pitch || 0, 0, 0, 'YXZ');
+      avatar.pivot.rotation.set(pose.pitch || 0, pose.yaw || 0, 0, 'YXZ');
       avatar.pivot.position.set(0, pose.lift || 0, 0);
       renderer.render(scene, camera);
     },

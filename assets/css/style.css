@@ -400,39 +400,7 @@ main {
   pointer-events: none;
 }
 
-.avatar-box.is-animated .avatar-button > img:not(.avatar-wave-hand) { opacity: 0; }
-.avatar-box .avatar-wave-hand {
-  position: absolute;
-  z-index: 2;
-  display: block;
-  pointer-events: none;
-  width: 31%;
-  height: auto;
-  max-width: none;
-  right: -6%;
-  bottom: -110%;
-  opacity: 0;
-  transform: rotate(0deg);
-  transform-origin: 58% 95%;
-  will-change: transform, bottom, opacity;
-}
-.avatar-box.is-waving .avatar-wave-hand {
-  animation: avatar-wave-photo 4.8s both;
-}
-@keyframes avatar-wave-photo {
-  0%, 43% { bottom: -110%; opacity: 0; transform: rotate(0deg); }
-  /* Keep fingertips near their prior height while showing the smaller wristwatch. */
-  55% { bottom: -3%; opacity: 1; transform: rotate(-10deg); }
-  61% { bottom: -3%; opacity: 1; transform: rotate(12deg); }
-  67% { bottom: -3%; opacity: 1; transform: rotate(-10deg); }
-  73% { bottom: -3%; opacity: 1; transform: rotate(10deg); }
-  80% { bottom: -3%; opacity: 1; transform: rotate(-7deg); }
-  87% { bottom: -3%; opacity: 1; transform: rotate(3deg); }
-  97%, 100% { bottom: -110%; opacity: 0; transform: rotate(0deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .avatar-box.is-waving .avatar-wave-hand { animation: none; opacity: 0; }
-}
+.avatar-box.is-animated .avatar-button > img { opacity: 0; }
 .avatar-box.is-animated .avatar-canvas { opacity: 1; }
 .avatar-button:focus-visible { outline-offset: -4px; }
 

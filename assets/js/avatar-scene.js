@@ -1,6 +1,37 @@
 import * as THREE from '../vendor/three/three.module.js';
-import { createAvatarModel } from './avatar-model.js';
+import { createAvatarModel } from './avatar-model.js?v=edges-watch-1';
+import { bleedTransparentRGB } from './avatar-texture.js?v=edges-watch-1';
 export { sampleGreeting, DURATIONS } from './avatar-motion.js';
+
+function portraitTexture(portrait) {
+  const width = portrait.naturalWidth || portrait.width;
+  const height = portrait.naturalHeight || portrait.height;
+  if (!width || !height) throw new Error('Portrait is not decoded');
+  let texture;
+  try {
+    const buffer = document.createElement('canvas');
+    buffer.width = width; buffer.height = height;
+    const context = buffer.getContext('2d', { willReadFrequently: true });
+    if (!context) throw new Error('2D canvas unavailable');
+    context.drawImage(portrait, 0, 0);
+    const rgba = context.getImageData(0, 0, width, height).data;
+    const pixels = bleedTransparentRGB(rgba, width, height, Math.max(8, Math.ceil(width / 80)));
+    texture = new THREE.DataTexture(pixels, width, height, THREE.RGBAFormat, THREE.UnsignedByteType);
+    texture.flipY = true;
+    texture.magFilter = THREE.LinearFilter;
+    texture.minFilter = THREE.LinearMipmapLinearFilter;
+    texture.generateMipmaps = true;
+  } catch (error) {
+    // A canvas/privacy restriction must not remove the existing avatar.
+    console.warn('Portrait edge preprocessing unavailable; using the original image.', error);
+    texture = new THREE.Texture(portrait);
+  }
+  texture.colorSpace = THREE.SRGBColorSpace;
+  // The material premultiplies once AFTER color conversion, not the source PNG.
+  texture.premultiplyAlpha = false;
+  texture.needsUpdate = true;
+  return texture;
+}
 
 export function createAvatarScene(canvas, portrait) {
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'low-power' });
@@ -18,16 +49,23 @@ export function createAvatarScene(canvas, portrait) {
   fill.position.set(3, 1, 2);
   scene.add(fill);
 
-  const texture = new THREE.Texture(portrait);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  texture.needsUpdate = true;
-  const model = createAvatarModel(texture);
-  scene.add(model.root);
-
+  let texture, model;
+  try {
+    texture = portraitTexture(portrait);
+    model = createAvatarModel(texture);
+    scene.add(model.root);
+  } catch (error) {
+    if (texture) texture.dispose();
+    renderer.dispose();
+    throw error;
+  }
+  let disposed = false;
   return {
-    setSize(size) { renderer.setSize(size, size, false); },
-    render(pose) { model.applyPose(pose); renderer.render(scene, camera); },
+    setSize(size) { if (!disposed) renderer.setSize(size, size, false); },
+    render(pose) { if (!disposed) { model.applyPose(pose); renderer.render(scene, camera); } },
     dispose() {
+      if (disposed) return;
+      disposed = true;
       const geometries = new Set();
       const materials = new Set();
       model.root.traverse(object => {

@@ -1,5 +1,6 @@
 import * as THREE from '../vendor/three/three.module.js';
 import { HEAD_OUTLINE } from './avatar-outline.js';
+import { createGreetingHand } from './avatar-hand.js?v=edges-watch-1';
 
 // Image-based head geometry preserves the original portrait's facial identity.
 // The back of the head, eyelids, wrist, palm and fingers are actual 3D meshes.
@@ -27,14 +28,17 @@ export function createAvatarModel(texture) {
     positions.setZ(index, surfaceDepth(positions.getX(index), positions.getY(index)));
   }
   faceGeometry.computeVertexNormals();
-  const faceMaterial = new THREE.MeshBasicMaterial({ map: texture, alphaTest: .2, side: THREE.DoubleSide, toneMapped: false });
+  const faceMaterial = new THREE.MeshBasicMaterial({
+    map: texture, transparent: true, alphaTest: .02,
+    premultipliedAlpha: true, side: THREE.FrontSide, toneMapped: false
+  });
   faceMaterial.name = 'OriginalPortrait';
   const face = new THREE.Mesh(faceGeometry, faceMaterial);
   face.name = 'TexturedFace';
   features.add(face);
 
-  // Join the back volume to the actual hair, ear and jaw silhouette, rather
-  // than placing an unrelated ellipsoid behind the face.
+  // Keep the back just inside the PNG outline, avoiding an exposed dark seam.
+  // The image plane and its UVs remain exactly the same size and position.
   const backGeometry = new THREE.BufferGeometry();
   const backVertices = [];
   const backIndices = [];
@@ -42,17 +46,30 @@ export function createAvatarModel(texture) {
   const skin = new THREE.Color('#dfae92');
   const hair = new THREE.Color('#211b19');
   const segments = 24;
+  function outlineColor(x, y, fallback) {
+    const image = texture.image;
+    if (!image || !image.data || !image.width || !image.height) return fallback.clone();
+    const px = THREE.MathUtils.clamp(Math.round((x / 3 + .5) * (image.width - 1)), 0, image.width - 1);
+    const py = THREE.MathUtils.clamp(Math.round((.5 - y / 3) * (image.height - 1)), 0, image.height - 1);
+    const at = (py * image.width + px) * 4;
+    if (image.data[at + 3] < 80) return fallback.clone();
+    return new THREE.Color().setRGB(image.data[at] / 255, image.data[at + 1] / 255,
+      image.data[at + 2] / 255, THREE.SRGBColorSpace);
+  }
   HEAD_OUTLINE.forEach(([y, left, right], row) => {
     const center = (left + right) / 2;
-    const radius = Math.max(.001, (right - left) / 2);
+    const radius = Math.max(.001, (right - left) / 2 - .012);
     const depth = .59 * Math.sqrt(Math.max(0, Math.sin(Math.PI * row / (HEAD_OUTLINE.length - 1))));
-    const color = skin.clone().lerp(hair, THREE.MathUtils.smoothstep(y, -.1, .3));
+    const fallback = skin.clone().lerp(hair, THREE.MathUtils.smoothstep(y, -.1, .3));
+    const leftColor = outlineColor(Math.min(center, left + .026), y, fallback);
+    const rightColor = outlineColor(Math.max(center, right - .026), y, fallback);
     for (let column = 0; column <= segments; column += 1) {
       const angle = Math.PI * column / segments;
       const x = center + radius * Math.cos(angle);
       const rightWeight = (x - left) / Math.max(.002, right - left);
       const edgeDepth = THREE.MathUtils.lerp(surfaceDepth(left, y), surfaceDepth(right, y), rightWeight);
-      backVertices.push(x, y, edgeDepth - depth * Math.sin(angle));
+      backVertices.push(x, y, edgeDepth - .012 - depth * Math.sin(angle));
+      const color = leftColor.clone().lerp(rightColor, rightWeight);
       colors.push(color.r, color.g, color.b);
       if (row < HEAD_OUTLINE.length - 1 && column < segments) {
         const a = row * (segments + 1) + column;
@@ -108,39 +125,9 @@ export function createAvatarModel(texture) {
     creases.push(crease);
   }
 
-  const hand = new THREE.Group();
-  hand.name = 'LeftHand';
+  const greetingHand = createGreetingHand();
+  const { hand, fingers } = greetingHand;
   root.add(hand);
-  const handMaterial = new THREE.MeshStandardMaterial({ color: '#e7b397', roughness: .65, metalness: 0 });
-  const handSphere = new THREE.SphereGeometry(1, 20, 14);
-  function ellipsoid(name, parent, position, scale) {
-    const mesh = new THREE.Mesh(handSphere, handMaterial);
-    mesh.name = name;
-    mesh.position.set(...position);
-    mesh.scale.set(...scale);
-    parent.add(mesh);
-    return mesh;
-  }
-  ellipsoid('Wrist', hand, [0, -.13, 0], [.09, .145, .065]);
-  ellipsoid('Palm', hand, [0, .09, 0], [.165, .23, .075]);
-  const fingers = [];
-  const fingerLengths = [.25, .3, .275, .215];
-  [-.112, -.037, .043, .115].forEach((x, index) => {
-    const finger = new THREE.Group();
-    finger.name = `LeftFinger${index + 1}`;
-    finger.position.set(x, .245, 0);
-    finger.rotation.z = (.5 - index / 3) * .2;
-    hand.add(finger);
-    const length = fingerLengths[index];
-    ellipsoid(`${finger.name}Tip`, finger, [0, length / 2, 0], [.038, length / 2 + .025, .036]);
-    fingers.push(finger);
-  });
-  const thumb = new THREE.Group();
-  thumb.name = 'LeftThumb';
-  thumb.position.set(-.125, .02, .01);
-  thumb.rotation.z = .8;
-  hand.add(thumb);
-  ellipsoid('Thumb', thumb, [0, .095, .012], [.043, .145, .04]);
 
   function applyPose(pose) {
     head.rotation.set(pose.pitch, pose.yaw, pose.roll, 'YXZ');
@@ -155,10 +142,7 @@ export function createAvatarModel(texture) {
       crease.scale.setScalar(amount);
       crease.visible = amount > .001;
     });
-    hand.position.set(1.1, -1.9 + 1.57 * pose.handLift, .48);
-    hand.rotation.set(-.12, -.13, -.1 + pose.wave);
-    hand.scale.setScalar(.001 + 1.1 * THREE.MathUtils.smoothstep(pose.handLift, 0, .45));
-    fingers.forEach((finger, index) => { finger.rotation.x = pose.fingerCurl * (1 + index * .12); });
+    greetingHand.applyPose(pose);
   }
 
   return { root, head, hand, lids, creases, fingers, applyPose };

@@ -30,10 +30,10 @@
     initialization = (async () => {
       if (!portrait.complete && portrait.decode) await portrait.decode();
       if (!portrait.naturalWidth) throw new Error('Portrait unavailable');
-      library = await import(new URL('./avatar-scene.js?v=nod-only-1', scriptURL).href);
-      scene = library.createAvatarScene(canvas, portrait);
+      library = await import(new URL('./avatar-scene.js?v=tripo-glb-1', scriptURL).href);
+      scene = await library.createAvatarScene(canvas);
       resize();
-      if (!motion.matches) box.classList.add('is-animated');
+      box.classList.add('is-animated');
     })().catch(error => {
       if (scene) scene.dispose();
       scene = null;
@@ -76,7 +76,7 @@
   button.addEventListener('click', () => play('intro'));
   motion.addEventListener('change', () => {
     stop();
-    if (motion.matches) box.classList.remove('is-animated');
+    if (motion.matches) { initialize().then(() => scene?.render(neutral())).catch(() => {}); }
     else play('intro');
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
@@ -100,7 +100,7 @@
   window.addEventListener('pagehide', event => { if (!event.persisted && scene) scene.dispose(); });
 
   function scheduleGreeting() {
-    if (motion.matches) return;
+    if (motion.matches) { initialize().catch(() => {}); return; }
     if ('requestIdleCallback' in window) window.requestIdleCallback(() => play('intro'), { timeout: 1200 });
     else window.setTimeout(() => play('intro'), 300);
   }

@@ -406,10 +406,10 @@ main {
   z-index: 2;
   display: block;
   pointer-events: none;
-  width: 43%;
+  width: 31%;
   height: auto;
   max-width: none;
-  right: -4%;
+  right: -6%;
   bottom: -110%;
   opacity: 0;
   transform: rotate(0deg);
@@ -421,12 +421,13 @@ main {
 }
 @keyframes avatar-wave-photo {
   0%, 43% { bottom: -110%; opacity: 0; transform: rotate(0deg); }
-  55% { bottom: -24%; opacity: 1; transform: rotate(-12deg); }
-  61% { bottom: -24%; opacity: 1; transform: rotate(14deg); }
-  67% { bottom: -24%; opacity: 1; transform: rotate(-12deg); }
-  73% { bottom: -24%; opacity: 1; transform: rotate(12deg); }
-  80% { bottom: -24%; opacity: 1; transform: rotate(-9deg); }
-  87% { bottom: -24%; opacity: 1; transform: rotate(4deg); }
+  /* Keep fingertips near their prior height while showing the smaller wristwatch. */
+  55% { bottom: -3%; opacity: 1; transform: rotate(-10deg); }
+  61% { bottom: -3%; opacity: 1; transform: rotate(12deg); }
+  67% { bottom: -3%; opacity: 1; transform: rotate(-10deg); }
+  73% { bottom: -3%; opacity: 1; transform: rotate(10deg); }
+  80% { bottom: -3%; opacity: 1; transform: rotate(-7deg); }
+  87% { bottom: -3%; opacity: 1; transform: rotate(3deg); }
   97%, 100% { bottom: -110%; opacity: 0; transform: rotate(0deg); }
 }
 @media (prefers-reduced-motion: reduce) {

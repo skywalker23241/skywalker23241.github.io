@@ -28,8 +28,8 @@ export function sampleGreeting(time, kind = 'full') {
   const handLift = full ? track(t, [[0, 0], [2.1, 0], [2.7, 1], [4.05, 1], [4.65, 0], [4.8, 0]]) : 0;
   return {
     pitch: .145 * pulse(t, .2, 1.05) - .025 * pulse(t, 1.05, 1.5),
-    yaw: full ? track(t, [[0, 0], [1.05, 0], [1.55, -.22], [2.05, .18], [2.4, 0], [4.8, 0]]) : 0,
-    roll: .018 * Math.sin(t * 4) * envelope,
+    yaw: 0,
+    roll: 0,
     lift: .018 * envelope,
     blink: Math.max(pulse(t, .73, .95), full ? pulse(t, 2.24, 2.46) : 0, full ? pulse(t, 4.12, 4.34) : 0),
     handLift,

@@ -1,7 +1,7 @@
 import * as THREE from '../vendor/three/three.module.js';
-import { createAvatarModel } from './avatar-model.js?v=edges-watch-1';
+import { createAvatarModel } from './avatar-model.js?v=wave2d-1';
 import { bleedTransparentRGB } from './avatar-texture.js?v=edges-watch-1';
-export { sampleGreeting, DURATIONS } from './avatar-motion.js';
+export { sampleGreeting, DURATIONS } from './avatar-motion.js?v=wave2d-1';
 
 function portraitTexture(portrait) {
   const width = portrait.naturalWidth || portrait.width;

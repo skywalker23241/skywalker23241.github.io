@@ -6,6 +6,7 @@
   const button = box.querySelector('.avatar-button');
   const portrait = box.querySelector('img');
   const canvas = box.querySelector('canvas');
+  const waveHand = box.querySelector('.avatar-wave-hand');
   const scriptURL = document.currentScript.src;
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let scene = null;
@@ -16,7 +17,7 @@
   let token = 0;
   let visible = true;
   let contextLost = false;
-  const gaze = { x: 0, y: 0, targetX: 0, targetY: 0 };
+  const gaze = { y: 0, targetY: 0 };
 
   function neutral() { return library.sampleGreeting(0); }
   function resize() {
@@ -31,7 +32,7 @@
     initialization = (async () => {
       if (!portrait.complete && portrait.decode) await portrait.decode();
       if (!portrait.naturalWidth) throw new Error('Portrait unavailable');
-      library = await import(new URL('./avatar-scene.js?v=edges-watch-1', scriptURL).href);
+      library = await import(new URL('./avatar-scene.js?v=wave2d-1', scriptURL).href);
       scene = library.createAvatarScene(canvas, portrait);
       resize();
       if (!motion.matches) box.classList.add('is-animated');
@@ -51,7 +52,8 @@
     animationId = 0;
     token += 1;
     playing = false;
-    gaze.x = gaze.y = gaze.targetX = gaze.targetY = 0;
+    gaze.y = gaze.targetY = 0;
+    box.classList.remove('is-waving');
     if (renderNeutral && scene && !contextLost) scene.render(neutral());
   }
 
@@ -64,6 +66,11 @@
     if (run !== token) return;
     if (motion.matches || document.hidden || !visible) { stop(); return; }
     box.classList.add('is-animated');
+    if (kind === 'full' && waveHand?.complete && waveHand.naturalWidth) {
+      box.classList.remove('is-waving');
+      void waveHand.offsetWidth;
+      box.classList.add('is-waving');
+    }
     const start = performance.now();
     function tick(now) {
       if (run !== token) return;
@@ -81,14 +88,13 @@
     function tick(now) {
       const blend = 1 - Math.exp(-Math.min(.05, (now - previous) / 1000) * 14);
       previous = now;
-      gaze.x += (gaze.targetX - gaze.x) * blend;
       gaze.y += (gaze.targetY - gaze.y) * blend;
       const pose = neutral();
-      pose.yaw = gaze.x * .17;
+      pose.yaw = 0;
       pose.pitch = gaze.y * .1;
-      pose.roll = -gaze.x * .015;
+      pose.roll = 0;
       scene.render(pose);
-      if (Math.abs(gaze.targetX - gaze.x) + Math.abs(gaze.targetY - gaze.y) > .001) {
+      if (Math.abs(gaze.targetY - gaze.y) > .001) {
         animationId = requestAnimationFrame(tick);
       } else animationId = 0;
     }
@@ -99,12 +105,11 @@
   button.addEventListener('pointermove', event => {
     if (event.pointerType === 'touch' || playing) return;
     const bounds = button.getBoundingClientRect();
-    gaze.targetX = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / bounds.width * 2 - 1));
     gaze.targetY = Math.max(-1, Math.min(1, (event.clientY - bounds.top) / bounds.height * 2 - 1));
     followPointer();
   });
   button.addEventListener('pointerleave', () => {
-    gaze.targetX = gaze.targetY = 0;
+    gaze.targetY = 0;
     followPointer();
   });
   motion.addEventListener('change', () => {

@@ -1,6 +1,5 @@
 import * as THREE from '../vendor/three/three.module.js';
 import { HEAD_OUTLINE } from './avatar-outline.js';
-import { createGreetingHand } from './avatar-hand.js?v=edges-watch-1';
 
 // Image-based head geometry preserves the original portrait's facial identity.
 // The back of the head, eyelids, wrist, palm and fingers are actual 3D meshes.
@@ -125,12 +124,9 @@ export function createAvatarModel(texture) {
     creases.push(crease);
   }
 
-  const greetingHand = createGreetingHand();
-  const { hand, fingers } = greetingHand;
-  root.add(hand);
 
   function applyPose(pose) {
-    head.rotation.set(pose.pitch, pose.yaw, pose.roll, 'YXZ');
+    head.rotation.set(pose.pitch, 0, 0, 'YXZ');
     head.position.y = -.2 + pose.lift;
     lids.forEach(lid => {
       lid.scale.y = pose.blink;
@@ -142,8 +138,7 @@ export function createAvatarModel(texture) {
       crease.scale.setScalar(amount);
       crease.visible = amount > .001;
     });
-    greetingHand.applyPose(pose);
   }
 
-  return { root, head, hand, lids, creases, fingers, applyPose };
+  return { root, head, lids, creases, applyPose };
 }

@@ -28,8 +28,7 @@ select.addEventListener("click", function () { elementToggleFunc(this); });
 for (let i = 0; i < selectItems.length; i++) {
   selectItems[i].addEventListener("click", function () {
 
-    let selectedValue = this.innerText.toLowerCase();
-    selectValue.innerText = this.innerText;
+    let selectedValue = this.dataset.selectItem;
     elementToggleFunc(select);
     filterFunc(selectedValue);
 
@@ -40,6 +39,10 @@ for (let i = 0; i < selectItems.length; i++) {
 const filterItems = document.querySelectorAll("[data-filter-item]");
 
 const filterFunc = function (selectedValue) {
+
+  select.dataset.value = selectedValue;
+  selectValue.textContent = window.resumeI18n.text(selectedValue);
+  filterBtn.forEach(button => button.classList.toggle('active', button.dataset.filterBtn === selectedValue));
 
   for (let i = 0; i < filterItems.length; i++) {
 
@@ -56,19 +59,14 @@ const filterFunc = function (selectedValue) {
 }
 
 // add event in all filter button items for large screen
-let lastClickedBtn = filterBtn[0];
 
 for (let i = 0; i < filterBtn.length; i++) {
 
   filterBtn[i].addEventListener("click", function () {
 
-    let selectedValue = this.innerText.toLowerCase();
-    selectValue.innerText = this.innerText;
+    let selectedValue = this.dataset.filterBtn;
     filterFunc(selectedValue);
 
-    lastClickedBtn.classList.remove("active");
-    this.classList.add("active");
-    lastClickedBtn = this;
 
   });
 
@@ -98,6 +96,13 @@ for (let i = 0; i < formInputs.length; i++) {
 // submit the form to Formspree without leaving the page
 const formStatus = document.querySelector("[data-form-status]");
 
+function showFormStatus(key, state) {
+  formStatus.dataset.statusKey = key;
+  formStatus.textContent = window.resumeI18n.text(key);
+  formStatus.className = `form-status ${state}`;
+  formStatus.hidden = false;
+}
+
 form.addEventListener("submit", function (event) {
   event.preventDefault();
 
@@ -111,21 +116,17 @@ form.addEventListener("submit", function (event) {
   }).then(function (response) {
 
     if (response.ok) {
-      formStatus.textContent = "Thanks! Your message has been sent.";
-      formStatus.className = "form-status success";
+      showFormStatus('success', 'success');
       form.reset();
     } else {
-      formStatus.textContent = "Oops! Something went wrong. Please try again later.";
-      formStatus.className = "form-status error";
+      showFormStatus('error', 'error');
       formBtn.removeAttribute("disabled");
     }
 
     formStatus.hidden = false;
 
   }).catch(function () {
-    formStatus.textContent = "Network error. Please check your connection and try again.";
-    formStatus.className = "form-status error";
-    formStatus.hidden = false;
+    showFormStatus('network', 'error');
     formBtn.removeAttribute("disabled");
   });
 
@@ -141,7 +142,7 @@ const pages = document.querySelectorAll("[data-page]");
 for (let i = 0; i < navigationLinks.length; i++) {
   navigationLinks[i].addEventListener("click", function () {
 
-    const targetPage = this.textContent.trim().toLowerCase();
+    const targetPage = this.dataset.navLink;
 
     for (let i = 0; i < pages.length; i++) {
       if (targetPage === pages[i].dataset.page) {

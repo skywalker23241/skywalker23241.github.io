@@ -27,6 +27,7 @@ It is designed to be:
 ## Features
 
 - Personal sidebar with avatar, contact links, and social links
+- Chinese / English switch with a saved preference; navigation, resume, projects, and form messages switch together
 - About section for background, skills, and current focus
 - Resume timeline for education and experience
 - Portfolio section with category filtering
@@ -43,9 +44,10 @@ It is designed to be:
 |---|---|---|
 | **RestCal 休历** | Application | [Open project](https://skywalker23241.github.io/restcal/) |
 | **Abo Blog** | Web development | [Open blog](https://jackcooper.qzz.io/) |
-| **RadiantShelf** | Application | [Open project](https://playvalorant.qzz.io/) |
+| **RadiantShelf** | Application | Under maintenance · temporarily unavailable |
 | **PennyPeek** | Application | [Open project](https://pennypeek.abohack.com/) |
 | **YASB · Codex Usage** | Plugin | [Widget documentation](https://github.com/amnweb/yasb/wiki/(Widget)-Codex-Usage) |
+| **Abo's Status** | Personal service monitoring | [Open monitoring site](https://status.abohack.com/) |
 
 ---
 
@@ -170,8 +172,19 @@ This repository is currently maintained as a personal homepage project. If you w
 
 Interface icons are a local subset of [Phosphor Icons](https://github.com/phosphor-icons/core) 2.1.1. Their SVG paths are embedded directly in `index.html` so icons also render when opening the page through `file://`. The source sprite and MIT license are kept in `assets/icons/`. Copy the corresponding symbol paths into `<svg class="ph-icon" viewBox="0 0 256 256" aria-hidden="true">...</svg>` when adding an icon.
 
-Portfolio icons in `assets/images/apps/` are copied from the corresponding project repositories: RestCal (`public/assets/icons/icon-192.png`), PennyPeek / budget-abohack (`public/logo.svg`), RadiantShelf (`static/apple-touch-icon.png`), scfi-web-status-theme (`public/favicon.ico`), abo-astro-blog-theme (`public/apple-touch-icon.png`), and YASB (`src/assets/images/app_icon.png`). The YASB icon represents the host application of the Codex Usage widget.
+Portfolio icons in `assets/images/apps/` are copied from the corresponding project repositories: RestCal (`public/assets/icons/icon-192.png`), PennyPeek / pennypeek-abohack (`public/logo.svg`), RadiantShelf (`static/apple-touch-icon.png`), status-abohack (`public/icon.svg`), abo-astro-blog-theme (`public/apple-touch-icon.png`), and YASB (`src/assets/images/app_icon.png`). The YASB icon represents the host application of the Codex Usage widget.
 
 ### Avatar
 
 The sidebar displays the original static portrait in `assets/images/my-avatar.png`.
+
+### Languages
+
+Use the compact 中 / En controls at the end of the main navigation bar to switch languages. The first visit follows the browser language; later visits reuse the saved choice when local storage is available. Local copy lives in `assets/js/i18n.js`. Navigation and project filtering use fixed data attributes, so switching languages keeps the current page and category. Known blog titles have local English translations; new RSS titles without a translation retain their original text, and linked articles stay in their source language.
+
+The DOM regression check uses LinkeDOM only for testing; the website has no new runtime dependency. In PowerShell:
+
+```powershell
+npm install --prefix "$env:TEMP/resume-i18n-check" --no-audit --no-fund linkedom
+node scripts/test_i18n.mjs "$env:TEMP/resume-i18n-check/node_modules/linkedom"
+```
